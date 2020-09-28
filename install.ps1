@@ -59,4 +59,4 @@ New-Item -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Win
 
 New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Windows Events: Merge>Sort>Export to Text ``[Keyword(s)``]\command" -Name "(Default)" -Value  "powershell -noprofile -ExecutionPolicy Bypass & ""'$ENV:LOCALAPPDATA\AzureSupportUtilities\MergeExportEventLogs.ps1'"" 'KEY' '%1'"  –Force
 
-Write-host "Installation Complete - Contact soshah@microsoft.com for any questions or feedback" -ForegroundColor Green
+Write-host "Installation/Update Complete - Contact soshah@microsoft.com for any questions or feedback" -ForegroundColor Green
