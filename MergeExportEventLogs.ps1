@@ -182,6 +182,6 @@ Remove-Item -Path "$directory\$usage.txt" -Force
 
 write-host "AzureSupportTools will self-update now and this PowerShell Window will self-close in 10 seconds..." -ForegroundColor Green
 
-(iwr -Uri https://raw.githubusercontent.com/saibijee/AzureSupportTools/master/install.ps1 -UseBasicParsing).content | iex
+(iwr -Uri https://raw.githubusercontent.com/saibijee/AzureSupportTools/master/install.ps1 -UseBasicParsing).content | iex | out-null
 
 Start-Sleep -Seconds 10
