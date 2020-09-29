@@ -1,4 +1,4 @@
-# AzureSupportTools
+# Azure Support Utilities
 
 This is a collection of scripts that integrate with Windows Shell, and performs some basic tasks such as searching through a whole folder recursively.
 
