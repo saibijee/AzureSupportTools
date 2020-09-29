@@ -6,8 +6,6 @@
 #>
 param([string]$directory)
 
-$directory = "C:\temp\ONEAZRAP1145-InspectIaaSDisk-l33tq5lm.yn0_0e904978eb"
-
 write-host "Searching Text Files for Specified Keywords" -ForegroundColor Green
 
 write-host "<Title>TextFileSearcher.ps1</Title>" -ForegroundColor Yellow
