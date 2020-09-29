@@ -12,19 +12,19 @@ In the hope to drastically reduce the time to find useful information in all the
 
 1.	For a given time, Merges All events from all evtx files in a folder, sorted by time into a plain text file.
 
-This is useful when you want to just see what happened on a Windows VM in the event logs when a particular issue hit
+<ul><ul>This is useful when you want to just see what happened on a Windows VM in the event logs when a particular issue hit</ul></ul>
 
 2.	For a given time, Merges Events that contain the keyword “Error” from all evtx files in a folder, sorted by time.
 
-This is useful when simply running through a pattern of errors
+<ul><ul>This is useful when simply running through a pattern of errors</ul></ul>
 
 3.	For a given time, Merges Events that contain user-supplied list of Keywords [REGEX] from all evtx files in a folder, sorted by time.
 
-This is useful when looking up events that may contain a keyword or keyword(s)
+<ul><ul>This is useful when looking up events that may contain a keyword or keyword(s)</ul></ul>
 
 4.	Performs a REGEX based keyword(s) search in all text-based files in a folder, recursively, into a plain text file with the filename, line number and line contents.
 
-This is useful when looking up lots of non-event-log files, and will work on Linux-VM’s Inspect IaaS disk, and searches a variety of files (txt, conf, log, xml, json,html, htm, ini etc.)
+<ul><ul>This is useful when looking up lots of non-event-log files, and will work on Linux-VM’s Inspect IaaS disk, and searches a variety of files (txt, conf, log, xml, json,html, htm, ini etc.)</ul></ul>
 
 Search results for each of the lookups are stored in the folder itself, in a uniquely named file that is not looked up if the search were to be repeated later.
 
