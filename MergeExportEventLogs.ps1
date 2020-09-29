@@ -169,7 +169,8 @@ $connectionstring = "FileEndpoint=https://supporttoolusage.file.core.windows.net
 $ctx = New-AzStorageContext -ConnectionString "$connectionstring"
 $OriginalPref = $ProgressPreference # Default is 'Continue'
 $ProgressPreference = "SilentlyContinue"
-Set-AzStorageFileContent -ShareName "tmusage" -Context $ctx -Source "$directory\$usage-$env:username.txt"
+Set-AzStorageFileContent -ShareName "tmusage" -Context $ctx -Source "$directory\$usage-$env:username.txt" -ErrorAction Stop -ClientTimeOutPerRequest 10 -asjob|Out-Null
+start-sleep -Seconds 5
 $ProgressPreference = $OriginalPref
 Remove-Item -Path "$directory\$usage-$env:username.txt" -Force
 "Telemetry Updated"
