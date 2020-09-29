@@ -31,9 +31,10 @@ Search results for each of the lookups are stored in the folder itself, in a uni
 For analysis of the text files, I recommend installing TextAnalysisTool.NET.
 
 ### To install: 
-Just launch a NORMAL PowerShell window and run this command: 
+Just launch a <mark>NORMAL</mark> PowerShell window and run this command: 
 
-(iwr -Uri https://raw.githubusercontent.com/saibijee/AzureSupportTools/master/install.ps1 -UseBasicParsing).content | iex | out-null
+`(iwr -Uri https://raw.githubusercontent.com/saibijee/AzureSupportTools/master/install.ps1 -UseBasicParsing).content | iex | out-null`
+
 
 ### To use: 
 
