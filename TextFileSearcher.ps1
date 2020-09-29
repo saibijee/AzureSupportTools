@@ -6,6 +6,7 @@
 #>
 param([string]$directory)
 
+$directory = "C:\temp\ONEAZRAP1145-InspectIaaSDisk-l33tq5lm.yn0_0e904978eb"
 
 write-host "Searching Text Files for Specified Keywords" -ForegroundColor Green
 
@@ -14,18 +15,17 @@ write-host "<Author>Sohaib Shaheed (SOSHAH)</Author>" -ForegroundColor Yellow
 write-host "<Version>1.0</Version>" -ForegroundColor Yellow
 write-host "<PublishDate>28-09-2020</PublishDate>" -ForegroundColor Yellow
 
-[System.Collections.ArrayList]$keywordlist = @()
-
-
-$keyword= $null
-
+    $keywords=$null
+    $keyword= $null
     while ($keyword -ne "q"){
-        $keyword = Read-Host -Prompt "Please enter a keyword or string or Regex to search. Enter only q to quit entering keywords"
-        if ($keyword -ne "q"){
-            $keywordlist.add($keyword)
+        $keyword = Read-Host -Prompt "Please enter a keyword or string to search. Enter only q to quit entering keywords"
+        if($keywords -eq $null){
+            $keywords=$keywords+$keyword
+        }elseif ($keyword -ne "q"){
+            $keywords=$keywords+"|"+ $keyword
         }
     }
-"The search will be performed with these keywords: $keywordlist"
+    "The search will be performed with these keywords: $keywords"
 
 $timestamp = Get-Date -Format yyyymmddhhmmss
 
@@ -33,9 +33,9 @@ $outfilename = "{0}\{1}.KeywordSearchResults" -f $directory,$timestamp
 
 write-host "Output saved in $outfilename" -ForegroundColor Green
 
-$keywordlist -join " | " | Out-File $outfilename
+$keywords | Out-File $outfilename
 
-$keywordlist `
+$keywords `
 | foreach{ls -Path $directory -recurse  `
 | where name -match ".txt|.log|.html|.htm|.csv|.xml|.json|.config|.ini|.cfg|.conf|.settings|.bgi|.dsc|.tag|tsv" `
 | Select-String -Pattern $_ `
@@ -60,7 +60,7 @@ try{
 
 # Check Az PowerShell Modules
 
-    $AzModuleVersion = Get-InstalledModule -Name az
+    $AzModuleVersion = Get-InstalledModule -Name az -ErrorAction SilentlyContinue
     if (($AzModuleVersion.version.major -ge 3) -and ($AzModuleVersion.version.minor -ge 2)){
         #Write-Host "Azure PowerShell Version is greater than 3.2.0"
     }else{
@@ -100,3 +100,4 @@ write-host "AzureSupportTools will self-update now and this PowerShell Window wi
 (iwr -Uri https://raw.githubusercontent.com/saibijee/AzureSupportTools/master/install.ps1 -UseBasicParsing).content | iex | out-null
 
 Start-Sleep -Seconds 10
+
