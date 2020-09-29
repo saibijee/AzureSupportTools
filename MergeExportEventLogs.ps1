@@ -1,10 +1,11 @@
 <#
 <Title>MergeExportEventLogs.ps1</Title>
 <Author>Sohaib Shaheed (SOSHAH)</Author>
-<Version>1.0</Version>
+<Version>1.1</Version>
 <PublishDate>28-09-2020</PublishDate>
 #>
 param([string]$filtertype,[string]$directory)
+
 
 # Show Title
 write-host "Merging and Exporting $filtertype Event Logs" -ForegroundColor Green
@@ -75,7 +76,7 @@ if ($filtertype -eq "KEY"){
         $oldeventscount = $events.count
         "Reading {0}" -f $_.Name
         #"Time to Parse : {0} Seconds" -f (measure-command{$events+=(Get-WinEvent -Path $_.FullName -MaxEvents 6000 -ErrorAction SilentlyContinue | where {$_.TimeCreated -ge $earlydate -and $_.TimeCreated -le $latedate});}).TotalSeconds
-        "Time to Parse : {0} Seconds" -f (measure-command{$events+=(Get-WinEvent -FilterHashtable @{ Path=$_.fullname; StartTime=$earlydate;EndTime=$latedate;} -MaxEvents 5000 -ErrorAction SilentlyContinue | where {$_.TimeCreated -ge $earlydate -and $_.TimeCreated -le $latedate});}).TotalSeconds
+        "Time to Parse : {0} Seconds" -f (measure-command{$events+=(Get-WinEvent -FilterHashtable @{ Path=$_.fullname; StartTime=$earlydate;EndTime=$latedate;} -MaxEvents 5000 -ErrorAction SilentlyContinue);}).TotalSeconds
         "Events Added : {0}" -f (($events.count) - $oldeventscount);
     }
 
@@ -84,8 +85,44 @@ if ($filtertype -eq "KEY"){
     $evtxfiles | foreach {
         $oldeventscount = $events.count
         "Reading {0}" -f $_.Name 
-        "Time to Parse : {0} Seconds" -f (measure-command{$events+=(Get-WinEvent -FilterHashtable @{ Path=$_.fullname; StartTime=$earlydate;EndTime=$latedate;} -MaxEvents 5000 -ErrorAction SilentlyContinue | where {$_.TimeCreated -ge $earlydate -and $_.TimeCreated -le $latedate -and ($_.message -match $filtertype -or $_.inmessage -match $filtertype)})}).TotalSeconds
+        "Time to Parse : {0} Seconds" -f (measure-command{$events+=(Get-WinEvent -FilterHashtable @{ Path=$_.fullname; StartTime=$earlydate;EndTime=$latedate;} -MaxEvents 5000 -ErrorAction SilentlyContinue | where {($_.message -match $filtertype -or $_.inmessage -match $filtertype)})}).TotalSeconds
         "Events Added : {0}" -f (($events.count) - $oldeventscount);
+    }
+
+} elseif ($filtertype -eq "EVT"){
+    
+    $eventids=$null
+    $eventid= $null
+    while ($eventid -ne "q"){
+        $eventid = Read-Host -Prompt "Please enter an Event ID to search. Enter only q to quit entering Event IDs"
+        if($eventids -eq $null){
+            $eventids=$eventids+$eventid
+        }elseif ($eventid -ne "q"){
+            $eventids=$eventids+"|"+ $eventid
+        }
+    }
+    "The search will be performed with these Event IDs: $eventids"
+
+    #for ($i=0;$i -lt $eventids.Count; $i++){        $searchterm = "{0}" -f  $eventids[$i]    }
+
+    $evtxfiles | foreach {
+        #for ($i=0;$i -lt $eventids.Count; $i++){
+        $oldeventscount = $events.count
+        "Reading {0}" -f $_.Name
+        "Time to Parse : {0} Seconds" -f (measure-command{$events+=(Get-WinEvent -FilterHashtable @{ Path=$_.fullname; StartTime=$earlydate;EndTime=$latedate;ID=$eventids.Split("|")} -MaxEvents 5000 -ErrorAction SilentlyContinue)}).TotalSeconds
+        "Events Added : {0}" -f (($events.count) - $oldeventscount);
+        #}
+    }
+
+} elseif ($filtertype -eq "REB"){
+    
+    $evtxfiles | foreach {
+    
+        $oldeventscount = $events.count
+        "Reading {0}" -f $_.Name
+        "Time to Parse : {0} Seconds" -f (measure-command{$events+=(Get-WinEvent -FilterHashtable @{ Path=$_.fullname; StartTime=$earlydate;EndTime=$latedate;ID=6009} -MaxEvents 5000 -ErrorAction SilentlyContinue)}).TotalSeconds
+        "Events Added : {0}" -f (($events.count) - $oldeventscount);
+    
     }
 
 }
@@ -98,14 +135,11 @@ $timestamp = Get-Date -Format yyyymmddhhmmss
 "Total Events: {0}" -f $events.count 
 
 if([int32]$events.count -eq 0){
-   Write-Error "No Events were found" -ErrorAction Stop
-} else{
-   $outfilename = "{0}\{1}-{2}-MergedEventLogs{3}.MERGERESULT" -f $directory,$timestamp,$events[0].MachineName,$filtertype
-}
+   Write-Host "No Events were found between $earlydate and $latedate that met the criteria" -ForegroundColor Red
+} 
 
-if($outfilename -eq $null){
-    Write-Error "No Events to Save" -ErrorAction Stop
-}
+$outfilename = "{0}\{1}-{2}-MergedEventLogs.MERGERESULT" -f $directory,$timestamp,$filtertype
+
 
 write-host "Output saved in $outfilename" -ForegroundColor Green
 
@@ -113,19 +147,8 @@ write-host "Output saved in $outfilename" -ForegroundColor Green
 
 #$events | sort Timecreated | select Timecreated,message
 
-if ($filtertype -eq "KEY"){
-    
-    $events | Select TimeCreated,Message,Id,Version,Qualifiers,Level,Task,Opcode,Keywords,RecordId,ProviderName,ProviderId,LogName,ProcessId,ThreadId,MachineName,UserId,ActivityId,RelatedActivityId,ContainerLog,MatchedQueryIds,Bookmark,LevelDisplayName,OpcodeDisplayName,TaskDisplayName,KeywordsDisplayNames,Properties,@{Label="InMessage"; Expression={$vari=$null;for($i=0;$i -lt ($_.properties.value).count;$i++){$vari=$vari+[string]($_.properties[$i].value)+" ";}$vari}},@{Label="------"; Expression={("---------");}}|sort timecreated|out-file $outfilename -Width 2000 -Append
+$events | Select TimeCreated,Message,Id,Version,Qualifiers,Level,Task,Opcode,Keywords,RecordId,ProviderName,ProviderId,LogName,ProcessId,ThreadId,MachineName,UserId,ActivityId,RelatedActivityId,ContainerLog,MatchedQueryIds,Bookmark,LevelDisplayName,OpcodeDisplayName,TaskDisplayName,KeywordsDisplayNames,Properties,@{Label="InMessage"; Expression={$vari=$null;for($i=0;$i -lt ($_.properties.value).count;$i++){$vari=$vari+[string]($_.properties[$i].value)+" ";}$vari}},@{Label="------"; Expression={("---------");}}|sort timecreated|out-file $outfilename -Width 2000 -Append
 
-}elseif ($filtertype -eq "ALL"){
-
-    $events | select TimeCreated,Message,Id,Version,Qualifiers,Level,Task,Opcode,Keywords,RecordId,ProviderName,ProviderId,LogName,ProcessId,ThreadId,MachineName,UserId,ActivityId,RelatedActivityId,ContainerLog,MatchedQueryIds,Bookmark,LevelDisplayName,OpcodeDisplayName,TaskDisplayName,KeywordsDisplayNames,Properties,@{Label="InMessage"; Expression={$vari=$null;for($i=0;$i -lt ($_.properties.value).count;$i++){$vari=$vari+[string]($_.properties[$i].value)+" ";}$vari}},@{Label="------"; Expression={("---------");}}|sort timecreated|out-file $outfilename -Width 2000 -Append
-
-} elseif  ($filtertype -eq "ERR") {
-
-    $events | select TimeCreated,Message,Id,Version,Qualifiers,Level,Task,Opcode,Keywords,RecordId,ProviderName,ProviderId,LogName,ProcessId,ThreadId,MachineName,UserId,ActivityId,RelatedActivityId,ContainerLog,MatchedQueryIds,Bookmark,LevelDisplayName,OpcodeDisplayName,TaskDisplayName,KeywordsDisplayNames,Properties,@{Label="InMessage"; Expression={$vari=$null;for($i=0;$i -lt ($_.properties.value).count;$i++){$vari=$vari+[string]($_.properties[$i].value)+" ";}$vari}},@{Label="------"; Expression={("---------");}}|sort timecreated|out-file $outfilename -Width 2000 -Append
-
-}
 try{
     Invoke-Expression "$ENV:LOCALAPPDATA\Apps\2.0\0XNGJ0RK.L7M\KJT7N0H9.8QH\etwb..tion_0000000000000000_0001.0002_4610bfe88690a93d\TextAnalysisTool.NET.exe $outfilename"
 }catch{
@@ -189,3 +212,4 @@ Write-host "Update Failed" -ForegroundColor Red
 }
 
 Start-Sleep -Seconds 10
+
