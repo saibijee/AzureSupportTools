@@ -28,7 +28,7 @@ In the hope to drastically reduce the time to find useful information in all the
 
 Search results for each of the lookups are stored in the folder itself, in a uniquely named file that is not looked up if the search were to be repeated later.
 
-For analysis of the text files, I recommend installing TextAnalysisTool.NET.
+For analysis of the text files, I recommend installing [TextAnalysisTool.NET](https://textanalysistool.github.io/).
 
 ### To install: 
 Just launch a <mark>NORMAL</mark> PowerShell window and run this command: 
