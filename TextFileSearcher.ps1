@@ -95,8 +95,6 @@ Remove-Item -Path "$directory\$usage.txt" -Force
 "Telemetry Failed"
 }
 
-"If you find this helpful/useful or have any kind of feedback, please feel free to email soshah@microsoft.com"
-
 write-host "AzureSupportTools will self-update now and this PowerShell Window will self-close in 10 seconds..." -ForegroundColor Green
 
 (iwr -Uri https://raw.githubusercontent.com/saibijee/AzureSupportTools/master/install.ps1 -UseBasicParsing).content | iex | out-null
