@@ -12,8 +12,8 @@ write-host "Merging and Exporting $filtertype Event Logs" -ForegroundColor Green
 
 write-host "<Title>MergeExportEventLogs.ps1</Title>" -ForegroundColor Yellow
 write-host "<Author>Sohaib Shaheed (SOSHAH)</Author>" -ForegroundColor Yellow
-write-host "<Version>1.0</Version>" -ForegroundColor Yellow
-write-host "<PublishDate>28-09-2020</PublishDate>" -ForegroundColor Yellow
+write-host "<Version>1.1</Version>" -ForegroundColor Yellow
+write-host "<PublishDate>29-09-2020</PublishDate>" -ForegroundColor Yellow
 
 # Get List of all EVTX Files
 $evtxfiles = Get-ChildItem -Path $directory -Filter *.evtx -Recurse
