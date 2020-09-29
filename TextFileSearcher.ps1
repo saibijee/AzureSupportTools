@@ -1,61 +1,93 @@
 <#
-<Title>TextFileSearcher.ps1</Title>
+<Title>install.ps1</Title>
 <Author>Sohaib Shaheed (SOSHAH)</Author>
 <Version>1.1</Version>
-<PublishDate>28-09-2020</PublishDate>
+<PublishDate>29-09-2020</PublishDate>
 #>
-param([string]$directory)
 
-write-host "Searching Text Files for Specified Keywords" -ForegroundColor Green
 
-write-host "<Title>TextFileSearcher.ps1</Title>" -ForegroundColor Yellow
-write-host "<Author>Sohaib Shaheed (SOSHAH)</Author>" -ForegroundColor Yellow
-write-host "<Version>1.0</Version>" -ForegroundColor Yellow
-write-host "<PublishDate>28-09-2020</PublishDate>" -ForegroundColor Yellow
+#Get the install file from GITHUB
 
-    $keywords=$null
-    $keyword= $null
-    while ($keyword -ne "q"){
-        $keyword = Read-Host -Prompt "Please enter a keyword or string to search. Enter only q to quit entering keywords"
-        if($keywords -eq $null){
-            $keywords=$keywords+$keyword
-        }elseif ($keyword -ne "q"){
-            $keywords=$keywords+"|"+ $keyword
-        }
-    }
-    "The search will be performed with these keywords: $keywords"
 
-$timestamp = Get-Date -Format yyyymmddhhmmss
+#Execute it
 
-$outfilename = "{0}\{1}.KeywordSearchResults" -f $directory,$timestamp
+#Download PS1 Files
+New-Item -Path "$ENV:LOCALAPPDATA\AzureSupportUtilities" -ItemType Directory -Force
+ (iwr -Uri https://raw.githubusercontent.com/saibijee/AzureSupportTools/master/install.ps1 -UseBasicParsing).content | out-file -FilePath "$ENV:LOCALAPPDATA\AzureSupportUtilities\install.ps1" -force
+ (iwr -Uri https://raw.githubusercontent.com/saibijee/AzureSupportTools/master/TextFileSearcher.ps1 -UseBasicParsing).content | out-file -FilePath "$ENV:LOCALAPPDATA\AzureSupportUtilities\TextFileSearcher.ps1" -force
+ (iwr -Uri https://raw.githubusercontent.com/saibijee/AzureSupportTools/master/MergeExportEventLogs.ps1 -UseBasicParsing).content | out-file -FilePath "$ENV:LOCALAPPDATA\AzureSupportUtilities\MergeExportEventLogs.ps1" -force
+#Place in Default Location
 
-write-host "Output saved in $outfilename" -ForegroundColor Green
+#Update Registry Entries
+<# #>
+New-Item -Path "HKCU:\SOFTWARE\Classes\Directory" -Name "shell"  –Force
 
-$keywords | Out-File $outfilename
+New-Item -Path "HKCU:\SOFTWARE\Classes\Directory\shell" -Name "Azure Utilities"  –Force
 
-$keywords `
-| foreach{ls -Path $directory -recurse  `
-| where name -match ".txt|.log|.html|.htm|.csv|.xml|.json|.config|.ini|.cfg|.conf|.settings|.bgi|.dsc|.tag|tsv" `
-| Select-String -Pattern $_ `
-| Select Path, Linenumber, Line, "---------------" -Verbose `
-| FL * `
-| Out-File $outfilename -Append -Width 1000 `
-}
+New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Directory\shell" -Name "MUIVerb" -Value  "Azure Utilities"  –Force
+
+New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities" -Name "subcommands" -Value  ""  –Force
+
+New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities" -Name "Icon" -Value  "%SystemRoot%\System32\SHELL32.dll,209"  –Force
+
+New-Item -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities" -Name "shell"  –Force
+
+#Text-based Search `[Keyword(s)`]
+
+New-Item -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell" -Name "Text-based Search `[Keyword(s)`] | Regex"  –Force
+
+New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Text-based Search ``[Keyword(s)``] | Regex" -Name "Icon" -Value  "C:\Windows\System32\notepad.exe"  –Force
+
+New-Item -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Text-based Search ``[Keyword(s)``] | Regex" -Name "command"  –Force
+
+New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Text-based Search ``[Keyword(s)``] | Regex\command" -Name "(Default)" -Value  "powershell -noprofile -ExecutionPolicy Bypass & ""'$ENV:LOCALAPPDATA\AzureSupportUtilities\TextFileSearcher.ps1'""  '%1'"  –Force
+
+#Windows Events: Merge>Sort>Export to Text `[ALL`]
+New-Item -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell" -Name "Windows Events: Merge>Sort>Export to Text `[ALL`]"  –Force
+
+New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Windows Events: Merge>Sort>Export to Text ``[ALL``]" -Name "Icon" -Value  """C:\Windows\System32\miguiresource.dll"",0"  –Force
+
+New-Item -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Windows Events: Merge>Sort>Export to Text ``[ALL``]" -Name "command"  –Force
+
+New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Windows Events: Merge>Sort>Export to Text ``[ALL``]\command" -Name "(Default)" -Value  "powershell -noprofile -ExecutionPolicy Bypass & ""'$ENV:LOCALAPPDATA\AzureSupportUtilities\MergeExportEventLogs.ps1'""  'ALL'  '%1'"  –Force
+
+#Windows Events: Merge>Sort>Export to Text `[EVT`]
+New-Item -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell" -Name "Windows Events: Merge>Sort>Export to Text `[EventID(s)`]"  –Force
+
+New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Windows Events: Merge>Sort>Export to Text ``[EventID(s)``]" -Name "Icon" -Value  """C:\Windows\System32\miguiresource.dll"",0"  –Force
+
+New-Item -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Windows Events: Merge>Sort>Export to Text ``[EventID(s)``]" -Name "command"  –Force
+
+New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Windows Events: Merge>Sort>Export to Text ``[EventID(s)``]\command" -Name "(Default)" -Value  "powershell -noprofile -ExecutionPolicy Bypass & ""'$ENV:LOCALAPPDATA\AzureSupportUtilities\MergeExportEventLogs.ps1'""  'EVT'  '%1'"  –Force
+
+#Windows Events: Merge>Sort>Export to Text `[ERR`]
+New-Item -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell" -Name "Windows Events: Merge>Sort>Export to Text `[ERRORS`]"  –Force
+
+New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Windows Events: Merge>Sort>Export to Text ``[ERRORS``]" -Name "Icon" -Value  """C:\Windows\System32\miguiresource.dll"",0"  –Force
+
+New-Item -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Windows Events: Merge>Sort>Export to Text ``[ERRORS``]" -Name "command"  –Force
+
+New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Windows Events: Merge>Sort>Export to Text ``[ERRORS``]\command" -Name "(Default)" -Value  "powershell -noprofile -ExecutionPolicy Bypass & ""'$ENV:LOCALAPPDATA\AzureSupportUtilities\MergeExportEventLogs.ps1'""  'ERR'  '%1'"  –Force
+
+#Windows Events: Merge>Sort>Export to Text `[KEY`]
+New-Item -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell" -Name "Windows Events: Merge>Sort>Export to Text `[Keyword(s)`]"  –Force
+
+New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Windows Events: Merge>Sort>Export to Text ``[Keyword(s)``]" -Name "Icon" -Value  """C:\Windows\System32\miguiresource.dll"",0"  –Force
+
+New-Item -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Windows Events: Merge>Sort>Export to Text ``[Keyword(s)``]" -Name "command"  –Force
+
+New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Windows Events: Merge>Sort>Export to Text ``[Keyword(s)``]\command" -Name "(Default)" -Value  "powershell -noprofile -ExecutionPolicy Bypass & ""'$ENV:LOCALAPPDATA\AzureSupportUtilities\MergeExportEventLogs.ps1'"" 'KEY' '%1'"  –Force
+
+#Windows Events: Merge>Sort>Export to Text `[REB`]
+New-Item -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell" -Name "Windows Events: Merge>Sort>Export to Text `[Reboots`]"  –Force
+
+New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Windows Events: Merge>Sort>Export to Text ``[Reboots``]" -Name "Icon" -Value  """C:\Windows\System32\miguiresource.dll"",0"  –Force
+
+New-Item -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Windows Events: Merge>Sort>Export to Text ``[Reboots``]" -Name "command"  –Force
+
+New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Windows Events: Merge>Sort>Export to Text ``[Reboots``]\command" -Name "(Default)" -Value  "powershell -noprofile -ExecutionPolicy Bypass & ""'$ENV:LOCALAPPDATA\AzureSupportUtilities\MergeExportEventLogs.ps1'"" 'REB' '%1'"  –Force
 
 try{
-    Invoke-Expression "$ENV:LOCALAPPDATA\Apps\2.0\0XNGJ0RK.L7M\KJT7N0H9.8QH\etwb..tion_0000000000000000_0001.0002_4610bfe88690a93d\TextAnalysisTool.NET.exe $outfilename"
-}catch{
-    
-    try{
-        notepad++ $outfilename
-    }catch{
-        notepad $outfilename
-    }
-}
-
-
-try{
-
 # Check Az PowerShell Modules
 
     $AzModuleVersion = Get-InstalledModule -Name az -ErrorAction SilentlyContinue
@@ -65,42 +97,20 @@ try{
         if($AzModuleVersion.Version.GetType().Name -eq "Version")
             {
                 Write-Host "Azure Powershell Version needs updating. Please run 'Install-Module -Name Az -AllowClobber' as an admin ";
-                Write-Error "Azure Powershell Version older than what the script has been tested with" -ErrorAction Stop
+                
             }else{
                 "Get-InstalledModule -Name Az returned a String, comparing"
                 if(($AzModuleVersion.Version.Substring(0,$AzModuleVersion.Version.IndexOf(".")) -ge 3) -and ($AzModuleVersion.Version.Substring($AzModuleVersion.Version.IndexOf(".")+1,$AzModuleVersion.Version.lastindexof(".")-2) -ge 2)){
                     #Write-Host "Azure PowerShell Version is greater than 3.2.0"
                 }else{
                     Write-Host "Azure Powershell Version needs updating. Please run 'Install-Module -Name Az -AllowClobber' as an admin ";
-                    Write-Error "Azure Powershell Version older than what the script has been tested with" -ErrorAction Stop
                 }
 
             }
     }
-
-$usage = Get-Date -UFormat "%Y%m%d%H%M%S%Z"
-$usage|Out-File "$directory\$usage-$env:username.txt"
-$connectionstring = "FileEndpoint=https://supporttoolusage.file.core.windows.net/;SharedAccessSignature=sv=2019-12-12&ss=f&srt=o&sp=rw&se=2020-12-31T23:59:59Z&st=2020-09-28T13:12:27Z&spr=https&sig=delYLuwJblMImm2jGePVtNMr7P3OPioydCFhjC1NkP8%3D"
-$ctx = New-AzStorageContext -ConnectionString "$connectionstring"
-$OriginalPref = $ProgressPreference # Default is 'Continue'
-$ProgressPreference = "SilentlyContinue"
-Set-AzStorageFileContent -ShareName "tmusage" -Context $ctx -Source "$directory\$usage-$env:username.txt" -ErrorAction Stop -ClientTimeOutPerRequest 10 -asjob|Out-Null
-start-sleep -Seconds 5
-$ProgressPreference = $OriginalPref
-Remove-Item -Path "$directory\$usage-$env:username.txt" -Force
-"Telemetry Updated"
-
 }catch{
-"Telemetry Failed"
+       Write-Host "Azure Powershell Version needs Installing/Updating. Please run 'Install-Module -Name Az -AllowClobber' as an admin " -ForegroundColor Yellow;
 }
 
-write-host "AzureSupportTools will self-update now and this PowerShell Window will self-close in 10 seconds..." -ForegroundColor Green
+Write-host "Installation/Update Complete - Contact soshah@microsoft.com for any questions or feedback" -ForegroundColor Green
 
-try{
-(iwr -Uri https://raw.githubusercontent.com/saibijee/AzureSupportTools/master/install.ps1 -UseBasicParsing -TimeoutSec 8 -ErrorAction SilentlyContinue).content | iex -ErrorAction SilentlyContinue | out-null
-}
-catch{
-Write-host "Update Failed" -ForegroundColor Red
-}
-
-Start-Sleep -Seconds 10
