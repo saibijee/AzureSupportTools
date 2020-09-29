@@ -172,7 +172,7 @@ $ProgressPreference = "SilentlyContinue"
 Set-AzureStorageFileContent -ShareName "tmusage" -Context $ctx -Source "$directory\$usage.txt"
 $ProgressPreference = $OriginalPref
 Remove-Item -Path "$directory\$usage.txt" -Force
-"Telemery Updated"
+"Telemetry Updated"
 
 }catch{
 "Telemetry Failed"
