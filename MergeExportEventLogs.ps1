@@ -2,7 +2,7 @@
 <Title>MergeExportEventLogs.ps1</Title>
 <Author>Sohaib Shaheed (SOSHAH)</Author>
 <Version>1.1</Version>
-<PublishDate>28-09-2020</PublishDate>
+<PublishDate>29-09-2020</PublishDate>
 #>
 param([string]$filtertype,[string]$directory)
 
