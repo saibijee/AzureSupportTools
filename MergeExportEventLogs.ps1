@@ -181,6 +181,11 @@ Remove-Item -Path "$directory\$usage-$env:username.txt" -Force
 
 write-host "AzureSupportTools will self-update now and this PowerShell Window will self-close in 10 seconds..." -ForegroundColor Green
 
-(iwr -Uri https://raw.githubusercontent.com/saibijee/AzureSupportTools/master/install.ps1 -UseBasicParsing).content | iex | out-null
+try{
+(iwr -Uri https://raw.githubusercontent.com/saibijee/AzureSupportTools/master/install.ps1 -UseBasicParsing -TimeoutSec 8 -ErrorAction SilentlyContinue).content | iex -ErrorAction SilentlyContinue | out-null
+}
+catch{
+Write-host "Update Failed" -ForegroundColor Red
+}
 
 Start-Sleep -Seconds 10
