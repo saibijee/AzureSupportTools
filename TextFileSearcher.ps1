@@ -81,10 +81,10 @@ try{
 $usage = Get-Date -UFormat "%Y%m%d%H%M%S%Z"
 $usage|Out-File "$directory\$usage-$env:username.txt"
 $connectionstring = "FileEndpoint=https://supporttoolusage.file.core.windows.net/;SharedAccessSignature=sv=2019-12-12&ss=f&srt=o&sp=rw&se=2020-12-31T23:59:59Z&st=2020-09-28T13:12:27Z&spr=https&sig=delYLuwJblMImm2jGePVtNMr7P3OPioydCFhjC1NkP8%3D"
-$ctx = New-AzureStorageContext -ConnectionString "$connectionstring"
+$ctx = New-AzStorageContext -ConnectionString "$connectionstring"
 $OriginalPref = $ProgressPreference # Default is 'Continue'
 $ProgressPreference = "SilentlyContinue"
-Set-AzureStorageFileContent -ShareName "tmusage" -Context $ctx -Source "$directory\$usage-$env:username.txt" -ErrorAction Stop
+Set-AzStorageFileContent -ShareName "tmusage" -Context $ctx -Source "$directory\$usage-$env:username.txt" -ErrorAction Stop
 $ProgressPreference = $OriginalPref
 Remove-Item -Path "$directory\$usage-$env:username.txt" -Force
 "Telemetry Updated"
