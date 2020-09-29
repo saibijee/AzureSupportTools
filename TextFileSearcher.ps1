@@ -37,7 +37,7 @@ $keywordlist -join " | " | Out-File $outfilename
 
 $keywordlist `
 | foreach{ls -Path $directory -recurse  `
-| where name -match ".txt|.log|.html|.htm|.csv|.xml|.json|.exe.config|.ini|.cfg|.conf" `
+| where name -match ".txt|.log|.html|.htm|.csv|.xml|.json|.config|.ini|.cfg|.conf|.settings|.bgi|.dsc|.tag|tsv" `
 | Select-String -Pattern $_ `
 | Select Path, Linenumber, Line, "---------------" -Verbose `
 | FL * `
