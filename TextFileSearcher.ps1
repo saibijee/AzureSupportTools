@@ -1,7 +1,7 @@
 <#
 <Title>TextFileSearcher.ps1</Title>
 <Author>Sohaib Shaheed (SOSHAH)</Author>
-<Version>1.0</Version>
+<Version>1.1</Version>
 <PublishDate>28-09-2020</PublishDate>
 #>
 param([string]$directory)
@@ -104,4 +104,3 @@ Write-host "Update Failed" -ForegroundColor Red
 }
 
 Start-Sleep -Seconds 10
-
