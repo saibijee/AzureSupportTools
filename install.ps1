@@ -90,14 +90,21 @@ New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\s
 # TextAnalysisTool.NET Installation
 
 try{
-    "Downloading TextAnalysisTool.NET"
     $TATOutputDir = "$env:LOCALAPPDATA\TextAnalysisTool.NET"
-    md -Path $TATOutputDir -Force
-    $url = "https://github.com/TextAnalysisTool/Releases/raw/master/TextAnalysisTool.NET.zip"
     $TATOutput = "$TATOutputDir\TextAnalysisTool.NET.zip"
-    Start-BitsTransfer -Source $url -Destination $TATOutput -ErrorAction SilentlyContinue
-    Expand-Archive -Path $TATOutput -DestinationPath $TATOutputDir -Force
-    Write-Host "TextAnalysisTool.NET Download Complete" -ForegroundColor Green
+        
+    if(Test-Path -Path "$TATOutputDir\TextAnalysisTool.NET.exe"){
+        Write-Host "Text Analysis Tool.NET already present" -ForegroundColor Green
+    }
+    else
+    {
+        md -Path $TATOutputDir -Force
+        $url = "https://github.com/TextAnalysisTool/Releases/raw/master/TextAnalysisTool.NET.zip"
+        $TATOutput = "$TATOutputDir\TextAnalysisTool.NET.zip"
+        Start-BitsTransfer -Source $url -Destination $TATOutput -ErrorAction SilentlyContinue
+        Expand-Archive -Path $TATOutput -DestinationPath $TATOutputDir -Force
+        Write-Host "TextAnalysisTool.NET Download Complete" -ForegroundColor Green
+    }
 }catch{
     Write-Host "TextAnalysisTool.NET Download Failed" -ForegroundColor Red
 }
