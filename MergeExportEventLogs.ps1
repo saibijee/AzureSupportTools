@@ -150,7 +150,7 @@ write-host "Output saved in $outfilename" -ForegroundColor Green
 $events | Select TimeCreated,Message,Id,Version,Qualifiers,Level,Task,Opcode,Keywords,RecordId,ProviderName,ProviderId,LogName,ProcessId,ThreadId,MachineName,UserId,ActivityId,RelatedActivityId,ContainerLog,MatchedQueryIds,Bookmark,LevelDisplayName,OpcodeDisplayName,TaskDisplayName,KeywordsDisplayNames,Properties,@{Label="InMessage"; Expression={$vari=$null;for($i=0;$i -lt ($_.properties.value).count;$i++){$vari=$vari+[string]($_.properties[$i].value)+" ";}$vari}},@{Label="------"; Expression={("---------");}}|sort timecreated|out-file $outfilename -Width 2000 -Append
 
 try{
-    Invoke-Expression "$ENV:LOCALAPPDATA\Apps\2.0\0XNGJ0RK.L7M\KJT7N0H9.8QH\etwb..tion_0000000000000000_0001.0002_4610bfe88690a93d\TextAnalysisTool.NET.exe $outfilename"
+    Invoke-Expression "$ENV:LOCALAPPDATA\TextAnalysisTool.NET\TextAnalysisTool.NET.exe $outfilename"
 }catch{
     
     try{
