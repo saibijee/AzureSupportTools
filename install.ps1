@@ -2,7 +2,7 @@
 <Title>install.ps1</Title>
 <Author>Sohaib Shaheed (SOSHAH)</Author>
 <Version>1.2</Version>
-<PublishDate>30-09-2020</PublishDate>
+<PublishDate>02-10-2020</PublishDate>
 #>
 
 
