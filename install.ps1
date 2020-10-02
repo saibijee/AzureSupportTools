@@ -43,13 +43,13 @@ New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\s
 
 #Text-based Search `[Lines with IP Addresses`]
 
-New-Item -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell" -Name "Text-based Search `[Lines with IP Addresses`] | Regex"  –Force
+New-Item -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell" -Name "Text-based Search `[Lines with IP Addresses`]"  –Force
 
-New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Text-based Search ``[Lines with IP Addresses``] | Regex" -Name "Icon" -Value  "C:\Windows\System32\notepad.exe"  –Force
+New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Text-based Search ``[Lines with IP Addresses``]" -Name "Icon" -Value  "C:\Windows\System32\notepad.exe"  –Force
 
-New-Item -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Text-based Search ``[Lines with IP Addresses``] | Regex" -Name "command"  –Force
+New-Item -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Text-based Search ``[Lines with IP Addresses``]" -Name "command"  –Force
 
-New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Text-based Search ``[Lines with IP Addresses``] | Regex\command" -Name "(Default)" -Value  "powershell -noprofile -ExecutionPolicy Bypass & ""'$ENV:LOCALAPPDATA\AzureSupportUtilities\TextFileSearcher.ps1'""  '%1' 'IPS'"  –Force
+New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Text-based Search ``[Lines with IP Addresses``]\command" -Name "(Default)" -Value  "powershell -noprofile -ExecutionPolicy Bypass & ""'$ENV:LOCALAPPDATA\AzureSupportUtilities\TextFileSearcher.ps1'""  '%1' 'IPS'"  –Force
 
 #Windows Events: Merge>Sort>Export to Text `[ALL`]
 New-Item -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell" -Name "Windows Events: Merge>Sort>Export to Text `[ALL`]"  –Force
