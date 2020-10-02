@@ -87,6 +87,22 @@ New-Item -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Win
 
 New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Windows Events: Merge>Sort>Export to Text ``[Reboots``]\command" -Name "(Default)" -Value  "powershell -noprofile -ExecutionPolicy Bypass & ""'$ENV:LOCALAPPDATA\AzureSupportUtilities\MergeExportEventLogs.ps1'"" 'REB' '%1'"  –Force
 
+# TextAnalysisTool.NET Installation
+
+try{
+    "Downloading TextAnalysisTool.NET"
+    $TATOutputDir = "$env:LOCALAPPDATA\TextAnalysisTool.NET"
+    md -Path $TATOutputDir -Force
+    $url = "https://github.com/TextAnalysisTool/Releases/raw/master/TextAnalysisTool.NET.zip"
+    $TATOutput = "$TATOutputDir\TextAnalysisTool.NET.zip"
+    Start-BitsTransfer -Source $url -Destination $TATOutput -ErrorAction SilentlyContinue
+    Expand-Archive -Path $TATOutput -DestinationPath $TATOutputDir -Force
+    Write-Host "TextAnalysisTool.NET Download Complete" -ForegroundColor Green
+}catch{
+    Write-Host "TextAnalysisTool.NET Download Failed" -ForegroundColor Red
+}
+
+
 try{
 # Check Az PowerShell Modules
 
