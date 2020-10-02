@@ -99,9 +99,9 @@ try{
                 Write-Host "Azure Powershell Version needs updating. Please run 'Install-Module -Name Az -AllowClobber' as an admin ";
                 
             }else{
-                "Get-InstalledModule -Name Az returned a String, comparing"
+                #"Get-InstalledModule -Name Az returned a String, comparing"
                 if(($AzModuleVersion.Version.Substring(0,$AzModuleVersion.Version.IndexOf(".")) -ge 3) -and ($AzModuleVersion.Version.Substring($AzModuleVersion.Version.IndexOf(".")+1,$AzModuleVersion.Version.lastindexof(".")-2) -ge 2)){
-                    #Write-Host "Azure PowerShell Version is greater than 3.2.0"
+                    Write-Host "Azure PowerShell Version is $($AzmoduleVersion.Version)" -ForegroundColor Green
                 }else{
                     Write-Host "Azure Powershell Version needs updating. Please run 'Install-Module -Name Az -AllowClobber' as an admin ";
                 }
