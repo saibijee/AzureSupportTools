@@ -113,28 +113,21 @@ try{
 }
 
 try{
-# Check Az PowerShell Modules
+$usage = Get-Date -UFormat "%Y%m%d%H%M%S%Z"
+$telemetryfilename = "$ENV:LOCALAPPDATA\AzureSupportUtilities\$usage-$env:username-Install.txt"
+$usage|Out-File $telemetryfilename
+$connectionstring = "FileEndpoint=https://supporttoolusage.file.core.windows.net/;SharedAccessSignature=sv=2019-12-12&ss=f&srt=o&sp=rw&se=2020-12-31T23:59:59Z&st=2020-09-28T13:12:27Z&spr=https&sig=delYLuwJblMImm2jGePVtNMr7P3OPioydCFhjC1NkP8%3D"
+$ctx = New-AzStorageContext -ConnectionString "$connectionstring"
+$OriginalPref = $ProgressPreference # Default is 'Continue'
+$ProgressPreference = "SilentlyContinue"
+Set-AzStorageFileContent -ShareName "tmusage" -Context $ctx -Source $telemetryfilename -ErrorAction Stop -ClientTimeOutPerRequest 10 -asjob|Out-Null
+start-sleep -Seconds 5
+$ProgressPreference = $OriginalPref
+Remove-Item -Path $telemetryfilename -Force
+"Telemetry Updated"
 
-    $AzModuleVersion = Get-InstalledModule -Name az -ErrorAction SilentlyContinue
-    if (($AzModuleVersion.version.major -ge 3) -and ($AzModuleVersion.version.minor -ge 2)){
-        #Write-Host "Azure PowerShell Version is greater than 3.2.0"
-    }else{
-        if($AzModuleVersion.Version.GetType().Name -eq "Version")
-            {
-                Write-Host "Azure Powershell Version needs updating. Please run 'Install-Module -Name Az -AllowClobber' as an admin ";
-                
-            }else{
-                "Get-InstalledModule -Name Az returned a String, comparing"
-                if(($AzModuleVersion.Version.Substring(0,$AzModuleVersion.Version.IndexOf(".")) -ge 3) -and ($AzModuleVersion.Version.Substring($AzModuleVersion.Version.IndexOf(".")+1,$AzModuleVersion.Version.lastindexof(".")-2) -ge 2)){
-                    #Write-Host "Azure PowerShell Version is greater than 3.2.0"
-                }else{
-                    Write-Host "Azure Powershell Version needs updating. Please run 'Install-Module -Name Az -AllowClobber' as an admin ";
-                }
-
-            }
-    }
 }catch{
-       Write-Host "Azure Powershell Version needs Installing/Updating. Please run 'Install-Module -Name Az -AllowClobber' as an admin " -ForegroundColor Yellow;
+ "Telemetry Failed"
 }
 
 Write-host "Installation/Update Complete - Contact soshah@microsoft.com for any questions or feedback" -ForegroundColor Green
