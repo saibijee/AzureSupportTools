@@ -55,6 +55,7 @@ try{
 
 
 #Telemetry
+<#
 try{
 # Check Az PowerShell Modules
 
@@ -78,7 +79,7 @@ try{
     }
 }catch{
        Write-Host "Azure Powershell Version needs Installing/Updating. Please run 'Install-Module -Name Az -AllowClobber' as an admin " -ForegroundColor Yellow;
-}
+}#>
 
 try{
     $usage = Get-Date -UFormat "%Y%m%d%H%M%S%Z"
