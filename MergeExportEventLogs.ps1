@@ -138,7 +138,7 @@ if([int32]$events.count -eq 0){
    Write-Host "No Events were found between $earlydate and $latedate that met the criteria" -ForegroundColor Red
 } 
 
-$outfilename = "{0}\{1}-{2}-MergedEventLogs.MERGERESULT" -f $directory,$timestamp,$filtertype
+$outfilename = "{0}\{1}-{2}-MergedEvents.MERGERESULT" -f $directory,$timestamp,$filtertype
 
 
 write-host "Output saved in $outfilename" -ForegroundColor Green
