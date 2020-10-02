@@ -112,5 +112,30 @@ try{
        Write-Host "Azure Powershell Version needs Installing/Updating. Please run 'Install-Module -Name Az -AllowClobber' as an admin " -ForegroundColor Yellow;
 }
 
+try{
+# Check Az PowerShell Modules
+
+    $AzModuleVersion = Get-InstalledModule -Name az -ErrorAction SilentlyContinue
+    if (($AzModuleVersion.version.major -ge 3) -and ($AzModuleVersion.version.minor -ge 2)){
+        #Write-Host "Azure PowerShell Version is greater than 3.2.0"
+    }else{
+        if($AzModuleVersion.Version.GetType().Name -eq "Version")
+            {
+                Write-Host "Azure Powershell Version needs updating. Please run 'Install-Module -Name Az -AllowClobber' as an admin ";
+                
+            }else{
+                "Get-InstalledModule -Name Az returned a String, comparing"
+                if(($AzModuleVersion.Version.Substring(0,$AzModuleVersion.Version.IndexOf(".")) -ge 3) -and ($AzModuleVersion.Version.Substring($AzModuleVersion.Version.IndexOf(".")+1,$AzModuleVersion.Version.lastindexof(".")-2) -ge 2)){
+                    #Write-Host "Azure PowerShell Version is greater than 3.2.0"
+                }else{
+                    Write-Host "Azure Powershell Version needs updating. Please run 'Install-Module -Name Az -AllowClobber' as an admin ";
+                }
+
+            }
+    }
+}catch{
+       Write-Host "Azure Powershell Version needs Installing/Updating. Please run 'Install-Module -Name Az -AllowClobber' as an admin " -ForegroundColor Yellow;
+}
+
 Write-host "Installation/Update Complete - Contact soshah@microsoft.com for any questions or feedback" -ForegroundColor Green
 
