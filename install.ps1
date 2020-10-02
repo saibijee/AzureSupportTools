@@ -92,7 +92,7 @@ try{
 
     $AzModuleVersion = Get-InstalledModule -Name az -ErrorAction SilentlyContinue
     if (($AzModuleVersion.version.major -ge 3) -and ($AzModuleVersion.version.minor -ge 2)){
-        #Write-Host "Azure PowerShell Version is greater than 3.2.0"
+         Write-Host "Azure PowerShell Version is $($AzmoduleVersion.Version)" -ForegroundColor Green
     }else{
         if($AzModuleVersion.Version.GetType().Name -eq "Version")
             {
