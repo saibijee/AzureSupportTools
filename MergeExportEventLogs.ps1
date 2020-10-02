@@ -89,6 +89,15 @@ if ($filtertype -eq "KEY"){
         "Events Added : {0}" -f (($events.count) - $oldeventscount);
     }
 
+}elseif  ($filtertype -eq "IPS") {
+
+    $evtxfiles | foreach {
+        $oldeventscount = $events.count
+        "Reading {0}" -f $_.Name 
+        "Time to Parse : {0} Seconds" -f (measure-command{$events+=(Get-WinEvent -FilterHashtable @{ Path=$_.fullname; StartTime=$earlydate;EndTime=$latedate;} -MaxEvents 5000 -ErrorAction SilentlyContinue | where {($_.message -match "\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b" -or $_.inmessage -match "\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b")})}).TotalSeconds
+        "Events Added : {0}" -f (($events.count) - $oldeventscount);
+    }
+
 } elseif ($filtertype -eq "EVT"){
     
     $eventids=$null
