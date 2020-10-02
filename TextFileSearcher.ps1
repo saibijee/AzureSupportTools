@@ -4,7 +4,7 @@
 <Version>1.2</Version>
 <PublishDate>02-10-2020</PublishDate>
 #>
-param([string]$directory)
+param([string]$directory, [string]$searchstring)
 
 write-host "Searching Text Files for Specified Keywords" -ForegroundColor Green
 
@@ -13,6 +13,16 @@ write-host "<Author>Sohaib Shaheed (SOSHAH)</Author>" -ForegroundColor Yellow
 write-host "<Version>1.2</Version>" -ForegroundColor Yellow
 write-host "<PublishDate>02-10-2020</PublishDate>" -ForegroundColor Yellow
 
+
+$timestamp = Get-Date -Format yyyymmddhhmmss
+
+$outfilename = "{0}\{1}.KeywordSearchResults" -f $directory,$timestamp
+
+write-host "Output saved in $outfilename" -ForegroundColor Green
+
+
+if ($searchstring -eq "KEY")
+{
     $keywords=$null
     $keyword= $null
     while ($keyword -ne "q"){
@@ -25,12 +35,6 @@ write-host "<PublishDate>02-10-2020</PublishDate>" -ForegroundColor Yellow
     }
     "The search will be performed with these keywords: $keywords"
 
-$timestamp = Get-Date -Format yyyymmddhhmmss
-
-$outfilename = "{0}\{1}.KeywordSearchResults" -f $directory,$timestamp
-
-write-host "Output saved in $outfilename" -ForegroundColor Green
-
 $keywords | Out-File $outfilename
 
 $keywords `
@@ -40,6 +44,18 @@ $keywords `
 | Select Path, Linenumber, Line, "---------------" -Verbose `
 | FL * `
 | Out-File $outfilename -Append -Width 1000 `
+}
+} elseif($searchstring -eq "IPS"){
+
+"Searching for lines containing IP Addresses" | Out-File $outfilename
+
+ls -Path $directory -recurse  `
+| where name -match ".txt|.log|.html|.htm|.csv|.xml|.json|.config|.ini|.cfg|.conf|.settings|.bgi|.dsc|.tag|tsv" `
+| Select-String -Pattern "\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b" `
+| Select Path, Linenumber, Line, "---------------" -Verbose `
+| FL * `
+| Out-File $outfilename -Append -Width 1000 `
+
 }
 
 try{
@@ -110,4 +126,5 @@ Write-host "Update Failed" -ForegroundColor Red
 
 write-host "This window will self-close in 10 seconds" -ForegroundColor Green
 Start-Sleep -Seconds 10
+
 
