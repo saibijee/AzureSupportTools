@@ -91,7 +91,7 @@ try{
 # Check Az PowerShell Modules
 
     $AzModuleVersion = Get-InstalledModule -Name az -ErrorAction SilentlyContinue
-    if (($AzModuleVersion.version.major -ge 3) -and ($AzModuleVersion.version.minor -ge 2)){
+    if (($AzModuleVersion.version.major -ge 4) -and ($AzModuleVersion.version.minor -ge 7)){
          Write-Host "Azure PowerShell Version is $($AzmoduleVersion.Version)" -ForegroundColor Green
     }else{
         if($AzModuleVersion.Version.GetType().Name -eq "Version")
@@ -110,6 +110,16 @@ try{
     }
 }catch{
        Write-Host "Azure Powershell Version needs Installing/Updating. Please run 'Install-Module -Name Az -AllowClobber' as an admin " -ForegroundColor Yellow;
+       
+       Write-host "Would you like to update your Azure PowerShell version? (Default is No)" -ForegroundColor Yellow 
+       $Readhost = Read-Host " ( y / n ) " 
+       Switch ($ReadHost) 
+         { 
+           Y {Write-host "Yes, Update Azure PowerShell Modules"; $UpdateAnswer=$true} 
+           N {Write-Host "Skipping update"; $UpdateAnswer=$false} 
+           Default {Write-Host "Skipping update"; $UpdateAnswer=$false} 
+         } 
+       if($UpdateAnswer){start-process powershell -Verb RunAs -ArgumentList "Write-host 'Installing Azure PowerShell module' -ForegroundColor Green;Install-Module -Name Az -AllowClobber"}
 }
 
 try{
