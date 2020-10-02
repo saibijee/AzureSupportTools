@@ -43,7 +43,7 @@ $keywords `
 }
 
 try{
-    Invoke-Expression "$ENV:LOCALAPPDATA\Apps\2.0\0XNGJ0RK.L7M\KJT7N0H9.8QH\etwb..tion_0000000000000000_0001.0002_4610bfe88690a93d\TextAnalysisTool.NET.exe $outfilename"
+    Invoke-Expression "$ENV:LOCALAPPDATA\TextAnalysisTool.NET\TextAnalysisTool.NET.exe $outfilename"
 }catch{
     
     try{
