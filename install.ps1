@@ -140,6 +140,44 @@ try{
     Write-Host "TextAnalysisTool.NET Download Failed" -ForegroundColor Red
 }
 
+# TATPlugin Installation
+
+try{
+    $TATOutputDir = "$env:LOCALAPPDATA\TextAnalysisTool.NET"
+    $TATPluginOutput = "$TATOutputDir\TATPLUGIN_Insight.dll"
+        
+    if(Test-Path -Path "$TATPluginOutput"){
+        Write-Host "TATPlugin already present" -ForegroundColor Green
+    }
+    else
+    {
+        md -Path $TATOutputDir -Force
+        Start-BitsTransfer -Source "\\emeacat\InsightClient\Application Files\ETWBench_1_2_5_2\TATPLUGIN_Insight.dll.deploy" -Destination $TATPluginOutput -ErrorAction SilentlyContinue
+        Write-Host "TATPlugin Download Complete" -ForegroundColor Green
+    }
+}catch{
+    Write-Host "TATPlugin Download Failed" -ForegroundColor Red
+}
+
+# TATAppInsightsPlugin Installation
+
+try{
+    $TATOutputDir = "$env:LOCALAPPDATA\TextAnalysisTool.NET"
+    $TATAppInsightsOutput = "$TATOutputDir\Microsoft.ApplicationInsights.dll"
+        
+    if(Test-Path -Path "$TATAppInsightsOutput "){
+        Write-Host "TATAppInsightsDLL already present" -ForegroundColor Green
+    }
+    else
+    {
+        md -Path $TATOutputDir -Force
+        Start-BitsTransfer -Source "\\emeacat\InsightClient\Application Files\ETWBench_1_2_5_2\Microsoft.ApplicationInsights.dll.deploy" -Destination $TATAppInsightsOutput  -ErrorAction SilentlyContinue
+        Write-Host "TATAppInsightsDLL Download Complete" -ForegroundColor Green
+    }
+}catch{
+    Write-Host "TATAppInsightsDLL Download Failed" -ForegroundColor Red
+}
+
 
 try{
 # Check Az PowerShell Modules
