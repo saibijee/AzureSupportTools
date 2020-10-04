@@ -118,6 +118,15 @@ New-Item -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Win
 
 New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Windows Events: Merge>Sort>Export to Text ``[Events with IP Addresses``]\command" -Name "(Default)" -Value  "powershell -noprofile -ExecutionPolicy Bypass & ""'$installationpath\MergeExportEventLogs.ps1'"" 'IPS' '%1'"  –Force
 
+#Windows Events: Merge>Sort>Export to Text `[UPD`]
+New-Item -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell" -Name "Windows Events: Merge>Sort>Export to Text `[Update History`]"  –Force
+
+New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Windows Events: Merge>Sort>Export to Text ``[Update History``]" -Name "Icon" -Value  """C:\Windows\System32\miguiresource.dll"",0"  –Force
+
+New-Item -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Windows Events: Merge>Sort>Export to Text ``[Update History``]" -Name "command"  –Force
+
+New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Windows Events: Merge>Sort>Export to Text ``[Update History``]\command" -Name "(Default)" -Value  "powershell -noprofile -ExecutionPolicy Bypass & ""'$installationpath\MergeExportEventLogs.ps1'""  'UPD'  '%1'"  –Force
+
 # TextAnalysisTool.NET Installation
 
 try{
