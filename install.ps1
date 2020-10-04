@@ -5,22 +5,35 @@
 <PublishDate>02-10-2020</PublishDate>
 #>
 
+# Set Up The Folder
+
+$installationpath = "$ENV:LOCALAPPDATA\AzureSupportUtilities"
+
+# Check if Installation Folder exists.
+
+if(Test-Path -Path $installationpath){
+    write-host "Installation Directory Exists" -ForegroundColor Green
+}else{
+    New-Item -Path "$ENV:LOCALAPPDATA\AzureSupportUtilities" -ItemType Directory -Force
+}
 
 #Get the install file from GITHUB
 
-
-#Execute it
-
 #Download PS1 Files
-New-Item -Path "$ENV:LOCALAPPDATA\AzureSupportUtilities" -ItemType Directory -Force
- (iwr -Uri https://raw.githubusercontent.com/saibijee/AzureSupportTools/master/install.ps1 -UseBasicParsing).content | out-file -FilePath "$ENV:LOCALAPPDATA\AzureSupportUtilities\install.ps1" -force
- (iwr -Uri https://raw.githubusercontent.com/saibijee/AzureSupportTools/master/TextFileSearcher.ps1 -UseBasicParsing).content | out-file -FilePath "$ENV:LOCALAPPDATA\AzureSupportUtilities\TextFileSearcher.ps1" -force
- (iwr -Uri https://raw.githubusercontent.com/saibijee/AzureSupportTools/master/MergeExportEventLogs.ps1 -UseBasicParsing).content | out-file -FilePath "$ENV:LOCALAPPDATA\AzureSupportUtilities\MergeExportEventLogs.ps1" -force
+
+ (iwr -Uri https://raw.githubusercontent.com/saibijee/AzureSupportTools/master/install.ps1 -UseBasicParsing).content | out-file -FilePath "$installationpath\install.ps1" -force
+ (iwr -Uri https://raw.githubusercontent.com/saibijee/AzureSupportTools/master/TextFileSearcher.ps1 -UseBasicParsing).content | out-file -FilePath "$installationpath\TextFileSearcher.ps1" -force
+ (iwr -Uri https://raw.githubusercontent.com/saibijee/AzureSupportTools/master/MergeExportEventLogs.ps1 -UseBasicParsing).content | out-file -FilePath "$installationpath\MergeExportEventLogs.ps1" -force
 #Place in Default Location
 
 #Update Registry Entries
 <# #>
-New-Item -Path "HKCU:\SOFTWARE\Classes\Directory" -Name "shell"  –Force
+
+if (Test-Path -Path "HKCU:\SOFTWARE\Classes\Directory\shell"){
+    "Registry Key Exists"
+}else{
+    New-Item -Path "HKCU:\SOFTWARE\Classes\Directory" -Name "shell"  –Force
+}
 
 New-Item -Path "HKCU:\SOFTWARE\Classes\Directory\shell" -Name "Azure Utilities"  –Force
 
@@ -39,7 +52,7 @@ New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\s
 
 New-Item -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Text-based Search ``[Keyword(s)``] | Regex" -Name "command"  –Force
 
-New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Text-based Search ``[Keyword(s)``] | Regex\command" -Name "(Default)" -Value  "powershell -noprofile -ExecutionPolicy Bypass & ""'$ENV:LOCALAPPDATA\AzureSupportUtilities\TextFileSearcher.ps1'""  '%1' 'KEY'"  –Force
+New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Text-based Search ``[Keyword(s)``] | Regex\command" -Name "(Default)" -Value  "powershell -noprofile -ExecutionPolicy Bypass & ""'$installationpath\TextFileSearcher.ps1'""  '%1' 'KEY'"  –Force
 
 #Text-based Search `[Lines with IP Addresses`]
 
@@ -49,7 +62,7 @@ New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\s
 
 New-Item -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Text-based Search ``[Lines with IP Addresses``]" -Name "command"  –Force
 
-New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Text-based Search ``[Lines with IP Addresses``]\command" -Name "(Default)" -Value  "powershell -noprofile -ExecutionPolicy Bypass & ""'$ENV:LOCALAPPDATA\AzureSupportUtilities\TextFileSearcher.ps1'""  '%1' 'IPS'"  –Force
+New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Text-based Search ``[Lines with IP Addresses``]\command" -Name "(Default)" -Value  "powershell -noprofile -ExecutionPolicy Bypass & ""'$installationpath\TextFileSearcher.ps1'""  '%1' 'IPS'"  –Force
 
 #Windows Events: Merge>Sort>Export to Text `[ALL`]
 New-Item -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell" -Name "Windows Events: Merge>Sort>Export to Text `[ALL`]"  –Force
@@ -58,7 +71,7 @@ New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\s
 
 New-Item -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Windows Events: Merge>Sort>Export to Text ``[ALL``]" -Name "command"  –Force
 
-New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Windows Events: Merge>Sort>Export to Text ``[ALL``]\command" -Name "(Default)" -Value  "powershell -noprofile -ExecutionPolicy Bypass & ""'$ENV:LOCALAPPDATA\AzureSupportUtilities\MergeExportEventLogs.ps1'""  'ALL'  '%1'"  –Force
+New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Windows Events: Merge>Sort>Export to Text ``[ALL``]\command" -Name "(Default)" -Value  "powershell -noprofile -ExecutionPolicy Bypass & ""'$installationpath\MergeExportEventLogs.ps1'""  'ALL'  '%1'"  –Force
 
 #Windows Events: Merge>Sort>Export to Text `[EVT`]
 New-Item -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell" -Name "Windows Events: Merge>Sort>Export to Text `[EventID(s)`]"  –Force
@@ -67,7 +80,7 @@ New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\s
 
 New-Item -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Windows Events: Merge>Sort>Export to Text ``[EventID(s)``]" -Name "command"  –Force
 
-New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Windows Events: Merge>Sort>Export to Text ``[EventID(s)``]\command" -Name "(Default)" -Value  "powershell -noprofile -ExecutionPolicy Bypass & ""'$ENV:LOCALAPPDATA\AzureSupportUtilities\MergeExportEventLogs.ps1'""  'EVT'  '%1'"  –Force
+New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Windows Events: Merge>Sort>Export to Text ``[EventID(s)``]\command" -Name "(Default)" -Value  "powershell -noprofile -ExecutionPolicy Bypass & ""'$installationpath\MergeExportEventLogs.ps1'""  'EVT'  '%1'"  –Force
 
 #Windows Events: Merge>Sort>Export to Text `[ERR`]
 New-Item -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell" -Name "Windows Events: Merge>Sort>Export to Text `[ERRORS`]"  –Force
@@ -76,7 +89,7 @@ New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\s
 
 New-Item -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Windows Events: Merge>Sort>Export to Text ``[ERRORS``]" -Name "command"  –Force
 
-New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Windows Events: Merge>Sort>Export to Text ``[ERRORS``]\command" -Name "(Default)" -Value  "powershell -noprofile -ExecutionPolicy Bypass & ""'$ENV:LOCALAPPDATA\AzureSupportUtilities\MergeExportEventLogs.ps1'""  'ERR'  '%1'"  –Force
+New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Windows Events: Merge>Sort>Export to Text ``[ERRORS``]\command" -Name "(Default)" -Value  "powershell -noprofile -ExecutionPolicy Bypass & ""'$installationpath\MergeExportEventLogs.ps1'""  'ERR'  '%1'"  –Force
 
 #Windows Events: Merge>Sort>Export to Text `[KEY`]
 New-Item -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell" -Name "Windows Events: Merge>Sort>Export to Text `[Keyword(s)`]"  –Force
@@ -85,7 +98,7 @@ New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\s
 
 New-Item -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Windows Events: Merge>Sort>Export to Text ``[Keyword(s)``]" -Name "command"  –Force
 
-New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Windows Events: Merge>Sort>Export to Text ``[Keyword(s)``]\command" -Name "(Default)" -Value  "powershell -noprofile -ExecutionPolicy Bypass & ""'$ENV:LOCALAPPDATA\AzureSupportUtilities\MergeExportEventLogs.ps1'"" 'KEY' '%1'"  –Force
+New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Windows Events: Merge>Sort>Export to Text ``[Keyword(s)``]\command" -Name "(Default)" -Value  "powershell -noprofile -ExecutionPolicy Bypass & ""'$installationpath\MergeExportEventLogs.ps1'"" 'KEY' '%1'"  –Force
 
 #Windows Events: Merge>Sort>Export to Text `[REB`]
 New-Item -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell" -Name "Windows Events: Merge>Sort>Export to Text `[Reboots`]"  –Force
@@ -94,7 +107,7 @@ New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\s
 
 New-Item -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Windows Events: Merge>Sort>Export to Text ``[Reboots``]" -Name "command"  –Force
 
-New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Windows Events: Merge>Sort>Export to Text ``[Reboots``]\command" -Name "(Default)" -Value  "powershell -noprofile -ExecutionPolicy Bypass & ""'$ENV:LOCALAPPDATA\AzureSupportUtilities\MergeExportEventLogs.ps1'"" 'REB' '%1'"  –Force
+New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Windows Events: Merge>Sort>Export to Text ``[Reboots``]\command" -Name "(Default)" -Value  "powershell -noprofile -ExecutionPolicy Bypass & ""'$installationpath\MergeExportEventLogs.ps1'"" 'REB' '%1'"  –Force
 
 # Windows Events: Merge>Sort>Export to Text `[Events with IP Addresses`]
 New-Item -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell" -Name "Windows Events: Merge>Sort>Export to Text `[Events with IP Addresses`]"  –Force
@@ -103,7 +116,7 @@ New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\s
 
 New-Item -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Windows Events: Merge>Sort>Export to Text ``[Events with IP Addresses``]" -Name "command"  –Force
 
-New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Windows Events: Merge>Sort>Export to Text ``[Events with IP Addresses``]\command" -Name "(Default)" -Value  "powershell -noprofile -ExecutionPolicy Bypass & ""'$ENV:LOCALAPPDATA\AzureSupportUtilities\MergeExportEventLogs.ps1'"" 'IPS' '%1'"  –Force
+New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Windows Events: Merge>Sort>Export to Text ``[Events with IP Addresses``]\command" -Name "(Default)" -Value  "powershell -noprofile -ExecutionPolicy Bypass & ""'$installationpath\MergeExportEventLogs.ps1'"" 'IPS' '%1'"  –Force
 
 # TextAnalysisTool.NET Installation
 
@@ -164,22 +177,22 @@ try{
 }
 
 try{
-$usage = Get-Date -UFormat "%Y%m%d%H%M%S%Z"
-$telemetryfilename = "$ENV:LOCALAPPDATA\AzureSupportUtilities\$usage-$env:username-Install.txt"
-$usage|Out-File $telemetryfilename
-$connectionstring = "FileEndpoint=https://supporttoolusage.file.core.windows.net/;SharedAccessSignature=sv=2019-12-12&ss=f&srt=o&sp=rw&se=2020-12-31T23:59:59Z&st=2020-09-28T13:12:27Z&spr=https&sig=delYLuwJblMImm2jGePVtNMr7P3OPioydCFhjC1NkP8%3D"
-$ctx = New-AzStorageContext -ConnectionString "$connectionstring"
-$OriginalPref = $ProgressPreference # Default is 'Continue'
-$ProgressPreference = "SilentlyContinue"
-Set-AzStorageFileContent -ShareName "tmusage" -Context $ctx -Source $telemetryfilename -ErrorAction Stop -ClientTimeOutPerRequest 10 -asjob|Out-Null
-start-sleep -Seconds 5
-$ProgressPreference = $OriginalPref
-Remove-Item -Path $telemetryfilename -Force
-"Telemetry Updated"
-
+    $usage = Get-Date -UFormat "%Y%m%d%H%M%S%Z"
+    $telemetryfilename = "$installationpath\$usage-$env:username-Install.txt"
+    $usage|Out-File $telemetryfilename
+    $connectionstring = "FileEndpoint=https://supporttoolusage.file.core.windows.net/;SharedAccessSignature=sv=2019-12-12&ss=f&srt=o&sp=rw&se=2020-12-31T23:59:59Z&st=2020-09-28T13:12:27Z&spr=https&sig=delYLuwJblMImm2jGePVtNMr7P3OPioydCFhjC1NkP8%3D"
+    $ctx = New-AzStorageContext -ConnectionString "$connectionstring"
+    $OriginalPref = $ProgressPreference # Default is 'Continue'
+    $ProgressPreference = "SilentlyContinue"
+    Set-AzStorageFileContent -ShareName "tmusage" -Context $ctx -Source $telemetryfilename -ErrorAction Stop -ClientTimeOutPerRequest 10 -asjob|Out-Null
+    start-sleep -Seconds 5
+    $ProgressPreference = $OriginalPref
+    Remove-Item -Path $telemetryfilename -Force
+    "Telemetry Updated"
 }catch{
- "Telemetry Failed"
+    "Telemetry Failed"
 }
 
 Write-host "Installation/Update Complete - Contact soshah@microsoft.com for any questions or feedback" -ForegroundColor Green
+
 
