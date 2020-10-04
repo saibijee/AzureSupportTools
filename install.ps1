@@ -1,8 +1,8 @@
 <#
 <Title>install.ps1</Title>
 <Author>Sohaib Shaheed (SOSHAH)</Author>
-<Version>1.2</Version>
-<PublishDate>02-10-2020</PublishDate>
+<Version>1.3</Version>
+<PublishDate>04-10-2020</PublishDate>
 #>
 
 # Set Up The Folder
@@ -24,6 +24,7 @@ if(Test-Path -Path $installationpath){
  (iwr -Uri https://raw.githubusercontent.com/saibijee/AzureSupportTools/master/install.ps1 -UseBasicParsing).content | out-file -FilePath "$installationpath\install.ps1" -force
  (iwr -Uri https://raw.githubusercontent.com/saibijee/AzureSupportTools/master/TextFileSearcher.ps1 -UseBasicParsing).content | out-file -FilePath "$installationpath\TextFileSearcher.ps1" -force
  (iwr -Uri https://raw.githubusercontent.com/saibijee/AzureSupportTools/master/MergeExportEventLogs.ps1 -UseBasicParsing).content | out-file -FilePath "$installationpath\MergeExportEventLogs.ps1" -force
+ (iwr -Uri https://raw.githubusercontent.com/saibijee/AzureSupportTools/master/UPD.tat -UseBasicParsing).content | out-file -FilePath "$installationpath\UPD.tat" -force
 #Place in Default Location
 
 #Update Registry Entries
