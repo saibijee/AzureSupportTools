@@ -134,6 +134,17 @@ if ($filtertype -eq "KEY"){
     
     }
 
+} elseif ($filtertype -eq "UPD"){
+    $eventids = "19|20|43|44|6009"
+    $evtxfiles | foreach {
+    
+        $oldeventscount = $events.count
+        "Reading {0}" -f $_.Name
+        "Time to Parse : {0} Seconds" -f (measure-command{$events+=(Get-WinEvent -FilterHashtable @{ Path=$_.fullname; StartTime=$earlydate;EndTime=$latedate;ID=$eventids.Split("|")} -MaxEvents 5000 -ErrorAction SilentlyContinue)}).TotalSeconds
+        "Events Added : {0}" -f (($events.count) - $oldeventscount);
+    
+    }
+
 }
 
 
@@ -159,7 +170,10 @@ write-host "Output saved in $outfilename" -ForegroundColor Green
 $events | Select TimeCreated,Message,Id,Version,Qualifiers,Level,Task,Opcode,Keywords,RecordId,ProviderName,ProviderId,LogName,ProcessId,ThreadId,MachineName,UserId,ActivityId,RelatedActivityId,ContainerLog,MatchedQueryIds,Bookmark,LevelDisplayName,OpcodeDisplayName,TaskDisplayName,KeywordsDisplayNames,Properties,@{Label="InMessage"; Expression={$vari=$null;for($i=0;$i -lt ($_.properties.value).count;$i++){$vari=$vari+[string]($_.properties[$i].value)+" ";}$vari}},@{Label="------"; Expression={("---------");}}|sort timecreated|out-file $outfilename -Width 2000 -Append
 
 try{
-    Invoke-Expression "$ENV:LOCALAPPDATA\TextAnalysisTool.NET\TextAnalysisTool.NET.exe $outfilename"
+    switch ($filtertype){
+    "UPD"  {Invoke-Expression "$ENV:LOCALAPPDATA\TextAnalysisTool.NET\TextAnalysisTool.NET.exe $outfilename /filters:$ENV:LOCALAPPDATA\AzureSupportUtilities\$filtertype.tat"}
+    Default  {Invoke-Expression "$ENV:LOCALAPPDATA\TextAnalysisTool.NET\TextAnalysisTool.NET.exe $outfilename"}
+    }
 }catch{
     
     try{
@@ -218,7 +232,7 @@ try{
 write-host "AzureSupportTools will self-update now" -ForegroundColor Green
 
 try{
-(iwr -Uri https://raw.githubusercontent.com/saibijee/AzureSupportTools/master/install.ps1 -UseBasicParsing -TimeoutSec 8 -ErrorAction SilentlyContinue).content | iex -ErrorAction SilentlyContinue | out-null
+ (iwr -Uri https://raw.githubusercontent.com/saibijee/AzureSupportTools/master/install.ps1 -UseBasicParsing -TimeoutSec 8 -ErrorAction SilentlyContinue).content | iex -ErrorAction SilentlyContinue | out-null
 }
 catch{
 Write-host "Update Failed" -ForegroundColor Red
@@ -226,3 +240,4 @@ Write-host "Update Failed" -ForegroundColor Red
 
 write-host "This window will self-close in 10 seconds" -ForegroundColor Green
 Start-Sleep -Seconds 10
+
