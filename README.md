@@ -40,4 +40,4 @@ Just launch a <mark>NORMAL</mark> PowerShell window and run this command:
 
 Right click the folder that contains the content/event logs/text logs and explore the options.
                 
-The tool self-updates on each run and also, I’ve built in some minimal telemetry to track usage, and am open to questions on that from anyone concerned. The telemetry is done by uploading a basic txt file that is name with the timestamp to a storage account. Further improvements are on its way.
+The tool self-updates on each run and also, I’ve built in some minimal telemetry to track usage. The telemetry is done by uploading a basic txt file that is name with the timestamp to an Azure Storage Account. Further improvements are on its way.
