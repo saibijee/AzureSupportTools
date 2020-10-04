@@ -1,8 +1,8 @@
 <#
 <Title>TextFileSearcher.ps1</Title>
 <Author>Sohaib Shaheed (SOSHAH)</Author>
-<Version>1.2</Version>
-<PublishDate>02-10-2020</PublishDate>
+<Version>1.3</Version>
+<PublishDate>04-10-2020</PublishDate>
 #>
 param([string]$directory, [string]$searchstring)
 
@@ -10,8 +10,8 @@ write-host "Searching Text Files for Specified Keywords" -ForegroundColor Green
 
 write-host "<Title>TextFileSearcher.ps1</Title>" -ForegroundColor Yellow
 write-host "<Author>Sohaib Shaheed (SOSHAH)</Author>" -ForegroundColor Yellow
-write-host "<Version>1.2</Version>" -ForegroundColor Yellow
-write-host "<PublishDate>02-10-2020</PublishDate>" -ForegroundColor Yellow
+write-host "<Version>1.3</Version>" -ForegroundColor Yellow
+write-host "<PublishDate>04-10-2020</PublishDate>" -ForegroundColor Yellow
 
 
 $timestamp = Get-Date -Format yyyymmddhhmmss
