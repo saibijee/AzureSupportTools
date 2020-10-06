@@ -25,7 +25,7 @@ if(Test-Path -Path $installationpath){
  (iwr -Uri https://raw.githubusercontent.com/saibijee/AzureSupportTools/master/TextFileSearcher.ps1 -UseBasicParsing).content | out-file -FilePath "$installationpath\TextFileSearcher.ps1" -force
  (iwr -Uri https://raw.githubusercontent.com/saibijee/AzureSupportTools/master/MergeExportEventLogs.ps1 -UseBasicParsing).content | out-file -FilePath "$installationpath\MergeExportEventLogs.ps1" -force
  (iwr -Uri https://raw.githubusercontent.com/saibijee/AzureSupportTools/master/UPD.tat -UseBasicParsing).content | out-file -FilePath "$installationpath\UPD.tat" -force
- (iwr -Uri https://raw.githubusercontent.com/saibijee/AzureSupportTools/master/UPD.tat -UseBasicParsing).content | out-file -FilePath "$installationpath\UPD.tat" -force
+ (iwr -Uri https://raw.githubusercontent.com/saibijee/AzureSupportTools/master/RDS.tat -UseBasicParsing).content | out-file -FilePath "$installationpath\RDS.tat" -force
 #Place in Default Location
 
 #Update Registry Entries
