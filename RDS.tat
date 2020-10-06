@@ -1,6 +1,17 @@
-﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <TextAnalysisTool.NET version="2018-11-20" showOnlyFilteredLines="True">
   <filters>
+    <filter enabled="y" excluding="n" description="" backColor="f0e68c" type="matches_text" case_sensitive="n" regex="n" text="Message              : User config info will be loaded from local machine for this ICA-CGP connection" />
+    <filter enabled="y" excluding="n" description="" backColor="90ee90" type="matches_text" case_sensitive="n" regex="n" text="Message              : Listener ICA-CGP received a connection" />
+    <filter enabled="y" excluding="n" description="" backColor="ffb6c1" type="matches_text" case_sensitive="n" regex="n" text="Message              : Disconnect trace" />
+    <filter enabled="y" excluding="n" description="" backColor="ffb6c1" type="matches_text" case_sensitive="n" regex="y" text="Message              : .*Connection doesn't support logon error redirector" />
+    <filter enabled="y" excluding="n" description="" backColor="f0e68c" type="matches_text" case_sensitive="n" regex="y" text="Message              : The client supports version.*of the RDP graphics protocol" />
+    <filter enabled="y" excluding="n" description="" backColor="90ee90" type="matches_text" case_sensitive="n" regex="n" text="Message              : The server accepted a new UDP connection from client" />
+    <filter enabled="y" excluding="n" description="" backColor="90ee90" type="matches_text" case_sensitive="n" regex="y" text="Message              : .*UDP connection received SYN with data" />
+    <filter enabled="y" excluding="n" description="" backColor="f0e68c" type="matches_text" case_sensitive="n" regex="n" text="Message              : The multi-transport connection finished for tunnel" />
+    <filter enabled="y" excluding="n" description="" backColor="90ee90" type="matches_text" case_sensitive="n" regex="n" text="Message              : Listener RDP-Tcp received a connection" />
+    <filter enabled="y" excluding="n" description="" backColor="90ee90" type="matches_text" case_sensitive="n" regex="n" text="Message              : A TCP connection has been successfully established." />
+    <filter enabled="y" excluding="n" description="" backColor="90ee90" type="matches_text" case_sensitive="n" regex="n" text="Message              : The server accepted a new TCP connection from client" />
     <filter enabled="y" excluding="n" description="" backColor="ffb6c1" type="matches_text" case_sensitive="n" regex="y" text="Session.*has been disconnected, reason code" />
     <filter enabled="y" excluding="n" description="" backColor="f0e68c" type="matches_text" case_sensitive="n" regex="n" text="Message              : User config info will be loaded from local machine for this RDP-Tcp connection" />
     <filter enabled="y" excluding="n" description="" backColor="d3d3d3" type="matches_text" case_sensitive="n" regex="n" text="Message              : The connection is not using advanced RemoteFX RemoteApp graphics" />
