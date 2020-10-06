@@ -188,6 +188,7 @@ $events | Select TimeCreated,Message,Id,Version,Qualifiers,Level,Task,Opcode,Key
 try{
     switch ($filtertype){
     "UPD"  {Invoke-Expression "$ENV:LOCALAPPDATA\TextAnalysisTool.NET\TextAnalysisTool.NET.exe $outfilename /filters:$ENV:LOCALAPPDATA\AzureSupportUtilities\$filtertype.tat"}
+    "RDS"  {Invoke-Expression "$ENV:LOCALAPPDATA\TextAnalysisTool.NET\TextAnalysisTool.NET.exe $outfilename /filters:$ENV:LOCALAPPDATA\AzureSupportUtilities\$filtertype.tat"}
     Default  {Invoke-Expression "$ENV:LOCALAPPDATA\TextAnalysisTool.NET\TextAnalysisTool.NET.exe $outfilename"}
     }
 }catch{
