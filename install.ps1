@@ -128,6 +128,16 @@ New-Item -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Win
 
 New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Windows Events: Merge>Sort>Export to Text ``[Update History``]\command" -Name "(Default)" -Value  "powershell -noprofile -ExecutionPolicy Bypass & ""'$installationpath\MergeExportEventLogs.ps1'""  'UPD'  '%1'"  –Force
 
+#Windows Events: Merge>Sort>Export to Text `[RDS`]
+New-Item -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell" -Name "Windows Events: Merge>Sort>Export to Text `[RDS and RDP History`]"  –Force
+
+New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Windows Events: Merge>Sort>Export to Text ``[RDS and RDP History``]" -Name "Icon" -Value  """C:\Windows\System32\miguiresource.dll"",0"  –Force
+
+New-Item -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Windows Events: Merge>Sort>Export to Text ``[RDS and RDP History``]" -Name "command"  –Force
+
+New-ItemProperty -Path "HKCU:\SOFTWARE\Classes\Directory\shell\Azure Utilities\shell\Windows Events: Merge>Sort>Export to Text ``[RDS and RDP History``]\command" -Name "(Default)" -Value  "powershell -noprofile -ExecutionPolicy Bypass & ""'$installationpath\MergeExportEventLogs.ps1'""  'RDS'  '%1'"  –Force
+
+
 # TextAnalysisTool.NET Installation
 
 try{
@@ -242,5 +252,6 @@ try{
 }
 
 Write-host "Installation/Update Complete - Contact soshah@microsoft.com for any questions or feedback" -ForegroundColor Green
+
 
 
