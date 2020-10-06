@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<TextAnalysisTool.NET version="2018-11-20" showOnlyFilteredLines="True">
+  <filters>
+    <filter enabled="y" excluding="n" description="" backColor="ffb6c1" type="matches_text" case_sensitive="n" regex="y" text="Session.*has been disconnected, reason code" />
+    <filter enabled="y" excluding="n" description="" backColor="f0e68c" type="matches_text" case_sensitive="n" regex="n" text="Message              : User config info will be loaded from local machine for this RDP-Tcp connection" />
+    <filter enabled="y" excluding="n" description="" backColor="d3d3d3" type="matches_text" case_sensitive="n" regex="n" text="Message              : The connection is not using advanced RemoteFX RemoteApp graphics" />
+    <filter enabled="y" excluding="n" description="" backColor="90ee90" type="matches_text" case_sensitive="n" regex="y" text="Message              : A channel.*has been connected" />
+    <filter enabled="y" excluding="n" description="" backColor="ffb6c1" type="matches_text" case_sensitive="n" regex="y" text="Message              : Channel.*has been closed" />
+    <filter enabled="y" excluding="n" description="" backColor="ffb6c1" type="matches_text" case_sensitive="n" regex="n" text="Message              : A request timed out" />
+    <filter enabled="y" excluding="n" description="" backColor="ffb6c1" type="matches_text" case_sensitive="n" regex="y" text="Message              :.*Fail" />
+    <filter enabled="y" excluding="n" description="" type="matches_text" case_sensitive="n" regex="n" text="------               : ---------" />
+    <filter enabled="y" excluding="n" description="" type="matches_text" case_sensitive="n" regex="n" text="Id                   : " />
+    <filter enabled="y" excluding="n" description="" type="matches_text" case_sensitive="n" regex="n" text="TimeCreated          :" />
+    <filter enabled="y" excluding="n" description="" type="matches_text" case_sensitive="n" regex="n" text="Message              :" />
+    <filter enabled="y" excluding="n" description="" type="matches_text" case_sensitive="n" regex="n" text="                       Server name:" />
+    <filter enabled="y" excluding="n" description="" type="matches_text" case_sensitive="n" regex="n" text="                       Server address:" />
+    <filter enabled="y" excluding="n" description="" type="matches_text" case_sensitive="n" regex="n" text="                       User: " />
+  </filters>
+</TextAnalysisTool.NET>
