@@ -145,7 +145,23 @@ if ($filtertype -eq "KEY"){
     
     }
 
+} elseif ($filtertype -eq "RDS"){
+    $eventids = "8|9|33|40|41|42|49|65|66|68|72|98|100|101|104|130|131|132|135|141|148|162|166|168|169|227|228|229|258|261|1149|4624|9027|20502|20521|30803|30809"
+    $evtxfiles | foreach {
+    
+        $oldeventscount = $events.count
+        "Reading {0}" -f $_.Name
+        "Time to Parse : {0} Seconds" -f (measure-command{
+                for ($i=0;$i -lt $eventids.Split("|").count;$i++){
+                    $events+=(Get-WinEvent -FilterHashtable @{ Path=$_.fullname; StartTime=$earlydate;EndTime=$latedate;ID=($eventids.Split("|")[$i])} -MaxEvents 5000 -ErrorAction SilentlyContinue)
+                }
+            }).TotalSeconds
+        "Events Added : {0}" -f (($events.count) - $oldeventscount);
+    
+    }
+
 }
+
 
 
 # $evtxfiles | foreach {$events+=(Get-WinEvent -Path $_.FullName -MaxEvents 3000 -ErrorAction SilentlyContinue -verbose | where {$_.TimeCreated -ge $earlydate -and $_.TimeCreated -le $latedate})}
@@ -240,4 +256,5 @@ Write-host "Update Failed" -ForegroundColor Red
 
 write-host "This window will self-close in 10 seconds" -ForegroundColor Green
 Start-Sleep -Seconds 10
+
 
