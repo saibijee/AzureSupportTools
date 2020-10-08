@@ -166,7 +166,7 @@ if ($filtertype -eq "KEY"){
 
 # $evtxfiles | foreach {$events+=(Get-WinEvent -Path $_.FullName -MaxEvents 3000 -ErrorAction SilentlyContinue -verbose | where {$_.TimeCreated -ge $earlydate -and $_.TimeCreated -le $latedate})}
 
-$timestamp = Get-Date -Format yyyymmddhhmmss
+$timestamp = Get-Date -Format yyyyMMddHHmmss
 
 "Total Events: {0}" -f $events.count 
 
