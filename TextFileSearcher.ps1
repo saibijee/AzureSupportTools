@@ -14,7 +14,7 @@ write-host "<Version>1.3</Version>" -ForegroundColor Yellow
 write-host "<PublishDate>04-10-2020</PublishDate>" -ForegroundColor Yellow
 
 
-$timestamp = Get-Date -Format yyyymmddhhmmss
+$timestamp = Get-Date -Format yyyyMMddHHmmss
 
 $outfilename = "{0}\{1}.KeywordSearchResults" -f $directory,$timestamp
 
