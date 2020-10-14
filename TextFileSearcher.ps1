@@ -59,13 +59,13 @@ ls -Path $directory -recurse  `
 }
 
 try{
-    Invoke-Expression "$ENV:LOCALAPPDATA\TextAnalysisTool.NET\TextAnalysisTool.NET.exe $outfilename"
+    Invoke-Expression "$ENV:LOCALAPPDATA\TextAnalysisTool.NET\TextAnalysisTool.NET.exe '$outfilename'"
 }catch{
     
     try{
-        notepad++ $outfilename
+        notepad++ "$outfilename"
     }catch{
-        notepad $outfilename
+        notepad "$outfilename"
     }
 }
 
