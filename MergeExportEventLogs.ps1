@@ -1,8 +1,8 @@
 <#
 <Title>MergeExportEventLogs.ps1</Title>
 <Author>Sohaib Shaheed (SOSHAH)</Author>
-<Version>1.3</Version>
-<PublishDate>04-10-2020</PublishDate>
+<Version>1.4</Version>
+<PublishDate>15-10-2020</PublishDate>
 #>
 param([string]$filtertype,[string]$directory)
 
@@ -12,11 +12,11 @@ write-host "Merging and Exporting $filtertype Event Logs" -ForegroundColor Green
 
 write-host "<Title>MergeExportEventLogs.ps1</Title>" -ForegroundColor Yellow
 write-host "<Author>Sohaib Shaheed (SOSHAH)</Author>" -ForegroundColor Yellow
-write-host "<Version>1.3</Version>" -ForegroundColor Yellow
-write-host "<PublishDate>04-10-2020</PublishDate>" -ForegroundColor Yellow
+write-host "<Version>1.4</Version>" -ForegroundColor Yellow
+write-host "<PublishDate>15-10-2020</PublishDate>" -ForegroundColor Yellow
 
 # Get List of all EVTX Files
-$evtxfiles = Get-ChildItem -Path $directory -Filter *.evtx -Recurse
+$evtxfiles = Get-ChildItem -LiteralPath "\\?\$directory" -Filter *.evtx -Recurse
 
 # Tell user how many found
 "Found {0} files" -f $evtxfiles.count
@@ -257,5 +257,6 @@ Write-host "Update Failed" -ForegroundColor Red
 
 write-host "This window will self-close in 10 seconds" -ForegroundColor Green
 Start-Sleep -Seconds 10
+
 
 
