@@ -1,8 +1,8 @@
 <#
 <Title>TextFileSearcher.ps1</Title>
 <Author>Sohaib Shaheed (SOSHAH)</Author>
-<Version>1.3</Version>
-<PublishDate>04-10-2020</PublishDate>
+<Version>1.4</Version>
+<PublishDate>15-10-2020</PublishDate>
 #>
 param([string]$directory, [string]$searchstring)
 
@@ -10,8 +10,9 @@ write-host "Searching Text Files for Specified Keywords" -ForegroundColor Green
 
 write-host "<Title>TextFileSearcher.ps1</Title>" -ForegroundColor Yellow
 write-host "<Author>Sohaib Shaheed (SOSHAH)</Author>" -ForegroundColor Yellow
-write-host "<Version>1.3</Version>" -ForegroundColor Yellow
-write-host "<PublishDate>04-10-2020</PublishDate>" -ForegroundColor Yellow
+write-host "<Version>1.4</Version>" -ForegroundColor Yellow
+write-host "<PublishDate>15-10-2020</PublishDate>" -ForegroundColor Yellow
+
 
 
 $timestamp = Get-Date -Format yyyyMMddHHmmss
@@ -38,7 +39,7 @@ if ($searchstring -eq "KEY")
 $keywords | Out-File $outfilename
 
 $keywords `
-| foreach{ls -Path $directory -recurse  `
+| foreach{ls -LiteralPath "\\?\$directory" -recurse  `
 | where name -match ".txt|.log|.html|.htm|.csv|.xml|.json|.config|.ini|.cfg|.conf|.settings|.bgi|.dsc|.tag|tsv" `
 | Select-String -Pattern $_ `
 | Select Path, Linenumber, Line, "---------------" -Verbose `
@@ -49,7 +50,7 @@ $keywords `
 
 "Searching for lines containing IP Addresses" | Out-File $outfilename
 
-ls -Path $directory -recurse  `
+ls -LiteralPath "\\?\$directory" -recurse  `
 | where name -match ".txt|.log|.html|.htm|.csv|.xml|.json|.config|.ini|.cfg|.conf|.settings|.bgi|.dsc|.tag|tsv" `
 | Select-String -Pattern "\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b" `
 | Select Path, Linenumber, Line, "---------------" -Verbose `
@@ -126,5 +127,6 @@ Write-host "Update Failed" -ForegroundColor Red
 
 write-host "This window will self-close in 10 seconds" -ForegroundColor Green
 Start-Sleep -Seconds 10
+
 
 
