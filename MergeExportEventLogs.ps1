@@ -187,16 +187,16 @@ $events | Select TimeCreated,Message,Id,Version,Qualifiers,Level,Task,Opcode,Key
 
 try{
     switch ($filtertype){
-    "UPD"  {Invoke-Expression "$ENV:LOCALAPPDATA\TextAnalysisTool.NET\TextAnalysisTool.NET.exe $outfilename /filters:$ENV:LOCALAPPDATA\AzureSupportUtilities\$filtertype.tat"}
-    "RDS"  {Invoke-Expression "$ENV:LOCALAPPDATA\TextAnalysisTool.NET\TextAnalysisTool.NET.exe $outfilename /filters:$ENV:LOCALAPPDATA\AzureSupportUtilities\$filtertype.tat"}
-    Default  {Invoke-Expression "$ENV:LOCALAPPDATA\TextAnalysisTool.NET\TextAnalysisTool.NET.exe $outfilename"}
+    "UPD"  {Invoke-Expression "$ENV:LOCALAPPDATA\TextAnalysisTool.NET\TextAnalysisTool.NET.exe '$outfilename' /filters:$ENV:LOCALAPPDATA\AzureSupportUtilities\$filtertype.tat"}
+    "RDS"  {Invoke-Expression "$ENV:LOCALAPPDATA\TextAnalysisTool.NET\TextAnalysisTool.NET.exe '$outfilename' /filters:$ENV:LOCALAPPDATA\AzureSupportUtilities\$filtertype.tat"}
+    Default  {Invoke-Expression "$ENV:LOCALAPPDATA\TextAnalysisTool.NET\TextAnalysisTool.NET.exe '$outfilename'"}
     }
 }catch{
     
     try{
-        notepad++ $outfilename
+        notepad++ '$outfilename'
     }catch{
-        notepad $outfilename
+        notepad '$outfilename'
     }
 }
 
@@ -231,7 +231,7 @@ try{
 try{
     $usage = Get-Date -UFormat "%Y%m%d%H%M%S%Z"
     $telemetryfilename = "$ENV:LOCALAPPDATA\AzureSupportUtilities\$usage-$env:username-$filtertype.txt"
-    $usage|Out-File $telemetryfilename
+    "$usage $directory"|Out-File $telemetryfilename
     $connectionstring = "FileEndpoint=https://supporttoolusage.file.core.windows.net/;SharedAccessSignature=sv=2019-12-12&ss=f&srt=o&sp=rw&se=2020-12-31T23:59:59Z&st=2020-09-28T13:12:27Z&spr=https&sig=delYLuwJblMImm2jGePVtNMr7P3OPioydCFhjC1NkP8%3D"
     $ctx = New-AzStorageContext -ConnectionString "$connectionstring"
     $OriginalPref = $ProgressPreference # Default is 'Continue'
