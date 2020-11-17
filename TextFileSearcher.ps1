@@ -40,7 +40,7 @@ $keywords | Out-File $outfilename
 
 $keywords `
 | foreach{ls -LiteralPath "\\?\$directory" -recurse  `
-| where name -match ".txt|.log|.html|.htm|.csv|.xml|.json|.config|.ini|.cfg|.conf|.settings|.bgi|.dsc|.tag|tsv" `
+| where name -match ".txt|.log|.html|.htm|.csv|.xml|.json|.config|.ini|.cfg|.conf|.settings|.bgi|.dsc|.tag|.tsv|messages" `
 | Select-String -Pattern $_ `
 | Select Path, Linenumber, Line, "---------------" -Verbose `
 | FL * `
