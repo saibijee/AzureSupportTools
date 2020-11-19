@@ -51,7 +51,7 @@ $keywords `
 "Searching for lines containing IP Addresses" | Out-File $outfilename
 
 ls -LiteralPath "\\?\$directory" -recurse  `
-| where name -match ".txt|.log|.html|.htm|.csv|.xml|.json|.config|.ini|.cfg|.conf|.settings|.bgi|.dsc|.tag|tsv" `
+| where name -match ".allow|.bak|.bgi|.bin|.block|.boot|.cfg|.cf|.cnf|.config|.conf|.cron|.csv|.current|.db|.default|.deny|.dep|.dev.|.dev|.dps7|.dsc|.example|.handlers|.homedirs|.html|.ht|.ini|.json|.js|.kern|.linked|.list|.local|.lock|.log|.master|.mc|.misc|.mount|.net|.once|.openldap|.path|.pem|.perms|.pkl|.pl|.postfix|.pre|.profile|.repo|.rules|.security|.sendmail|.service|.settings|.sh|.slab|.slice|.smb|.socket|.so|.status|.subs|.systemd|.tab|.tag|.target|.timer|.tmp|.tsv|.txt|.var|.vg|.xml|blkio.|cgroup.|cpu.|cpuacct|cpuset.|cron-|hugetlb.|init.|memory.|messages|net_cls.|net_prio.|policy.|traceroute_|\.\d" `
 | Select-String -Pattern "\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b" `
 | Select Path, Linenumber, Line, "---------------" -Verbose `
 | FL * `
