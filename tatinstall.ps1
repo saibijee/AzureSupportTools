@@ -14,6 +14,18 @@ try{
         $TATOutput = "$TATOutputDir\TextAnalysisTool.NET.zip"
         Start-BitsTransfer -Source $url -Destination $TATOutput -ErrorAction SilentlyContinue
         Expand-Archive -Path $TATOutput -DestinationPath $TATOutputDir -Force
+        
+        # Create a Shortcut with Windows PowerShell
+        $SourceFileLocation = "$TATOutputDir\TextAnalysisTool.NET.exe"
+        $ShortcutLocation = "C:\Users\$ENV:Username\Desktop\TextAnalysisTool.NET.lnk"
+        #New-Object : Creates an instance of a Microsoft .NET Framework or COM object.
+        #-ComObject WScript.Shell: This creates an instance of the COM object that represents the WScript.Shell for invoke CreateShortCut
+        $WScriptShell = New-Object -ComObject WScript.Shell
+        $Shortcut = $WScriptShell.CreateShortcut($ShortcutLocation)
+        $Shortcut.TargetPath = $SourceFileLocation
+        #Save the Shortcut to the TargetPath
+        $Shortcut.Save()
+        
         Write-Host "TextAnalysisTool.NET Download Complete" -ForegroundColor Green
     }
 }catch{
