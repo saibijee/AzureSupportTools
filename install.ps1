@@ -239,7 +239,7 @@ try{
     $usage = Get-Date -UFormat "%Y%m%d%H%M%S%Z"
     $telemetryfilename = "$installationpath\$usage-$env:username-Install.txt"
     $usage|Out-File $telemetryfilename
-    $connectionstring = "FileEndpoint=https://supporttoolusage.file.core.windows.net/;SharedAccessSignature=sv=2019-12-12&ss=f&srt=o&sp=rw&se=2020-12-31T23:59:59Z&st=2020-09-28T13:12:27Z&spr=https&sig=delYLuwJblMImm2jGePVtNMr7P3OPioydCFhjC1NkP8%3D"
+    $connectionstring = "FileEndpoint=https://supporttoolusage.file.core.windows.net/;SharedAccessSignature=sv=2019-12-12&ss=f&srt=o&sp=rw&se=2021-12-31T23:59:59Z&st=2020-12-28T10:14:22Z&spr=https&sig=5kJH1Ok2CebU0cMP%2F%2BnNy7G5m6MXD37zl8CfQoLodug%3D"
     $ctx = New-AzStorageContext -ConnectionString "$connectionstring"
     $OriginalPref = $ProgressPreference # Default is 'Continue'
     $ProgressPreference = "SilentlyContinue"
